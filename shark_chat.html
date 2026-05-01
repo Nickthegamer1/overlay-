@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --shark: #0e1a1c;
+  --shark-edge: #2a3a3e;
+  --c-bcast: #d62828;
+  --c-leadmod: #b561ff;
+  --c-mod: #25d36b;
+  --c-vip: #ff5fa8;
+  --c-default: #3aa0ff;
+}
+
+body {
+  background: transparent;
+  font-family: 'IBM Plex Mono', monospace;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.chat {
+  width: 300px;
+  margin: 10px;
+}
+
+.chat-header {
+  background: linear-gradient(180deg, var(--shark-edge), var(--shark));
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 5px;
+  padding: 12px 14px 12px 44px;
+  border-left: 4px solid var(--c-default);
+  color: white;
+}
+
+.chat-body {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-row {
+  position: relative;
+  padding: 8px 10px 8px 24px;
+  background: rgba(0,0,0,0.7);
+  font-size: 14px;
+  animation: chatIn .3s ease;
+  border-left: 3px solid var(--c-default);
+  --fin: var(--c-default);
+  --name: var(--c-default);
+  color: white;
+}
+
+.chat-row::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 12px;
+  background: var(--fin);
+  clip-path: polygon(0% 100%, 100% 100%, 60% 0%);
+}
+
+.name {
+  color: var(--name);
+  font-weight: 700;
+}
+
+.chat-row.broadcaster {
+  border-left-color: var(--c-bcast);
+  --fin: var(--c-bcast);
+  --name: var(--c-bcast);
+}
+
+.chat-row.leadmod {
+  border-left-color: var(--c-leadmod);
+  --fin: var(--c-leadmod);
+  --name: var(--c-leadmod);
+}
+
+.chat-row.mod {
+  border-left-color: var(--c-mod);
+  --fin: var(--c-mod);
+  --name: var(--c-mod);
+}
+
+.chat-row.vip {
+  border-left-color: var(--c-vip);
+  --fin: var(--c-vip);
+  --name: var(--c-vip);
+}
+
+@keyframes chatIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+</style>
+</head>
+<body>
+<div class="chat">
+  <div class="chat-header">SHARK CHAT</div>
+  <div id="chat-body" class="chat-body"></div>
+</div>
+
+<script>
+const BROADCASTER = 'zookashark';
+const LEAD_MODS = new Set(['zookawife']);
+const MAX_MESSAGES = 15;
+const chatContainer = document.getElementById('chat-body');
+
+function getRole(username, isMod, isVip) {
+  const lower = username.toLowerCase();
+  if (lower === BROADCASTER) return 'broadcaster';
+  if (LEAD_MODS.has(lower)) return 'leadmod';
+  if (isMod) return 'mod';
+  if (isVip) return 'vip';
+  return 'viewer';
+}
+
+function addMessage(username, message, isMod, isVip) {
+  const role = getRole(username, isMod, isVip);
+  const msg = document.createElement('div');
+  msg.className = 'chat-row ' + role;
+  msg.innerHTML = '<span class="name">' + username + '</span>: ' + message;
+  chatContainer.appendChild(msg);
+  if (chatContainer.children.length > MAX_MESSAGES) {
+    chatContainer.removeChild(chatContainer.firstChild);
+  }
+}
+
+window.addEventListener('CustomEvent', function(e) {
+  const data = e.detail;
+  if (data.function === 'chatMessage') {
+    addMessage(data.args[0], data.args[1], data.args[2], data.args[3]);
+  }
+});
+</script>
+</body>
+</html>
