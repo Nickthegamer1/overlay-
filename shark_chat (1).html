@@ -8,242 +8,93 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --shark:        #0e1a1c;
-  --shark-edge:   #2a3a3e;
-  --c-bcast:      #d62828;
-  --c-bcast-d:    #5a0e0e;
-  --c-leadmod:    #b561ff;
-  --c-leadmod-d:  #4a1a78;
-  --c-mod:        #25d36b;
-  --c-mod-d:      #0e5a2c;
-  --c-vip:        #ff5fa8;
-  --c-vip-d:      #6e1a44;
-  --c-default:    #3aa0ff;
-  --c-default-d:  #134a78;
+  --shark:#0e1a1c;
+  --shark-edge:#2a3a3e;
+  --c-bcast:#d62828;
+  --c-bcast-d:#5a0e0e;
+  --c-leadmod:#b561ff;
+  --c-leadmod-d:#4a1a78;
+  --c-mod:#25d36b;
+  --c-mod-d:#0e5a2c;
+  --c-vip:#ff5fa8;
+  --c-vip-d:#6e1a44;
+  --c-default:#3aa0ff;
+  --c-default-d:#134a78;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{
-  width:100%;height:100%;
-  background: transparent;
-  font-family:'IBM Plex Mono',monospace;
-  color:#fff;
-  -webkit-font-smoothing:antialiased;
-  overflow:hidden;
-}
-
-.chat{
-  position:relative;
-  width:280px;
-  margin:30px auto 0;
-  padding-bottom:10px;
-  z-index:10;
-}
-
-.chat-header{
-  position:relative;
-  background:linear-gradient(180deg, var(--shark-edge), var(--shark));
-  color:#fff;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:22px;
-  letter-spacing:5px;
-  padding:12px 14px 12px 44px;
-  text-shadow:1px 1px 0 #000;
-  border-left:4px solid var(--c-default);
-  box-shadow:0 4px 12px rgba(0,0,0,0.6);
-}
-.chat-header::before{
-  content:"";
-  position:absolute;
-  left:10px;
-  top:-26px;
-  width:32px;
-  height:34px;
-  background:linear-gradient(180deg, var(--shark-edge), var(--shark));
-  clip-path:polygon(0% 100%, 100% 100%, 50% 0%);
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7));
-}
-.chat-header::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:-12px;
-  height:14px;
-  background:linear-gradient(180deg, var(--shark-edge), var(--shark));
-  clip-path:polygon(
-    0 0,
-    5% 100%, 10% 0,
-    15% 100%, 20% 0,
-    25% 100%, 30% 0,
-    35% 100%, 40% 0,
-    45% 100%, 50% 0,
-    55% 100%, 60% 0,
-    65% 100%, 70% 0,
-    75% 100%, 80% 0,
-    85% 100%, 90% 0,
-    95% 100%, 100% 0
-  );
-}
-
-.chat-body{
-  margin-top:14px;
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-  max-height:520px;
-  overflow:hidden;
-}
-
-.chat-row{
-  position:relative;
-  background:linear-gradient(90deg, rgba(0,0,0,0.78), rgba(0,0,0,0.15));
-  padding:8px 10px 8px 24px;
-  font-size:14px;
-  line-height:1.4;
-  text-shadow:1px 1px 0 rgba(0,0,0,0.9);
-  box-shadow:0 2px 6px rgba(0,0,0,0.5);
-  animation:chatIn 0.4s ease-out;
-  border-left:3px solid var(--c-default);
-  --fin: var(--c-default);
-  --fin-shadow: var(--c-default-d);
-  --name: var(--c-default);
-}
-.chat-row::before{
-  content:"";
-  position:absolute;
-  left:6px;
-  top:50%;
-  transform:translateY(-50%);
-  width:11px;
-  height:13px;
-  background:var(--fin);
-  clip-path:polygon(0% 100%, 100% 100%, 60% 0%);
-  filter:drop-shadow(0 1px 1px var(--fin-shadow));
-}
-.chat-row .name{
-  color:var(--name);
-  font-weight:700;
-  text-shadow:1px 1px 0 rgba(0,0,0,0.95), 0 0 6px rgba(0,0,0,0.4);
-}
-
-.chat-row.broadcaster{
-  border-left-color:var(--c-bcast);
-  --fin: var(--c-bcast);
-  --fin-shadow: var(--c-bcast-d);
-  --name: var(--c-bcast);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 14px rgba(214,40,40,0.45);
-}
-.chat-row.broadcaster .name{
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.95), 0 0 10px rgba(214,40,40,0.7);
-}
-.chat-row.leadmod{
-  border-left-color:var(--c-leadmod);
-  --fin: var(--c-leadmod);
-  --fin-shadow: var(--c-leadmod-d);
-  --name: var(--c-leadmod);
-}
-.chat-row.mod{
-  border-left-color:var(--c-mod);
-  --fin: var(--c-mod);
-  --fin-shadow: var(--c-mod-d);
-  --name: var(--c-mod);
-}
-.chat-row.vip{
-  border-left-color:var(--c-vip);
-  --fin: var(--c-vip);
-  --fin-shadow: var(--c-vip-d);
-  --name: var(--c-vip);
-}
-
-@keyframes chatIn{
-  from{ transform:translateX(-14px); opacity:0; }
-  to  { transform:translateX(0);     opacity:1; }
-}
+html,body{width:100%;height:100%;background:transparent;font-family:'IBM Plex Mono',monospace;color:#fff;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.chat{position:relative;width:280px;margin:30px auto 0;padding-bottom:10px;z-index:10;}
+.chat-header{position:relative;background:linear-gradient(180deg,var(--shark-edge),var(--shark));color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:5px;padding:12px 14px 12px 44px;text-shadow:1px 1px 0 #000;border-left:4px solid var(--c-default);box-shadow:0 4px 12px rgba(0,0,0,0.6);}
+.chat-header::before{content:"";position:absolute;left:10px;top:-26px;width:32px;height:34px;background:linear-gradient(180deg,var(--shark-edge),var(--shark));clip-path:polygon(0% 100%,100% 100%,50% 0%);filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7));}
+.chat-header::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:14px;background:linear-gradient(180deg,var(--shark-edge),var(--shark));clip-path:polygon(0 0,5% 100%,10% 0,15% 100%,20% 0,25% 100%,30% 0,35% 100%,40% 0,45% 100%,50% 0,55% 100%,60% 0,65% 100%,70% 0,75% 100%,80% 0,85% 100%,90% 0,95% 100%,100% 0);}
+.chat-body{margin-top:14px;display:flex;flex-direction:column;gap:7px;max-height:520px;overflow:hidden;}
+.chat-row{position:relative;background:linear-gradient(90deg,rgba(0,0,0,0.78),rgba(0,0,0,0.15));padding:8px 10px 8px 24px;font-size:14px;line-height:1.4;text-shadow:1px 1px 0 rgba(0,0,0,0.9);box-shadow:0 2px 6px rgba(0,0,0,0.5);animation:chatIn 0.4s ease-out;border-left:3px solid var(--c-default);--fin:var(--c-default);--fin-shadow:var(--c-default-d);--name:var(--c-default);}
+.chat-row::before{content:"";position:absolute;left:6px;top:50%;transform:translateY(-50%);width:11px;height:13px;background:var(--fin);clip-path:polygon(0% 100%,100% 100%,60% 0%);filter:drop-shadow(0 1px 1px var(--fin-shadow));}
+.chat-row .name{color:var(--name);font-weight:700;text-shadow:1px 1px 0 rgba(0,0,0,0.95),0 0 6px rgba(0,0,0,0.4);}
+.chat-row.broadcaster{border-left-color:var(--c-bcast);--fin:var(--c-bcast);--fin-shadow:var(--c-bcast-d);--name:var(--c-bcast);box-shadow:0 2px 6px rgba(0,0,0,0.5),0 0 14px rgba(214,40,40,0.45);}
+.chat-row.broadcaster .name{text-shadow:1px 1px 0 rgba(0,0,0,0.95),0 0 10px rgba(214,40,40,0.7);}
+.chat-row.leadmod{border-left-color:var(--c-leadmod);--fin:var(--c-leadmod);--fin-shadow:var(--c-leadmod-d);--name:var(--c-leadmod);}
+.chat-row.mod{border-left-color:var(--c-mod);--fin:var(--c-mod);--fin-shadow:var(--c-mod-d);--name:var(--c-mod);}
+.chat-row.vip{border-left-color:var(--c-vip);--fin:var(--c-vip);--fin-shadow:var(--c-vip-d);--name:var(--c-vip);}
+@keyframes chatIn{from{transform:translateX(-14px);opacity:0;}to{transform:translateX(0);opacity:1;}}
 </style>
 </head>
 <body>
-
 <div class="chat">
   <div class="chat-header">SHARK CHAT</div>
   <div class="chat-body" id="chatBody"></div>
 </div>
-
 <script>
 const BROADCASTER = 'zookashark';
 const LEAD_MODS = new Set(['zookawife']);
 const MAX_MESSAGES = 15;
 const chatContainer = document.getElementById('chatBody');
 
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-function getRole(username, isMod, isVip) {
+function getRole(username, isMod, isVip){
   const lower = username.toLowerCase();
-  if (lower === BROADCASTER) return 'broadcaster';
-  if (LEAD_MODS.has(lower)) return 'leadmod';
-  if (isMod) return 'mod';
-  if (isVip) return 'vip';
+  if(lower === BROADCASTER) return 'broadcaster';
+  if(LEAD_MODS.has(lower)) return 'leadmod';
+  if(isMod) return 'mod';
+  if(isVip) return 'vip';
   return 'default';
 }
 
-function addMessage(username, message, isMod, isVip) {
+function addMessage(username, message, isMod, isVip){
   const role = getRole(username, isMod, isVip);
   const row = document.createElement('div');
   row.className = 'chat-row' + (role === 'default' ? '' : ' ' + role);
   row.innerHTML = '<span class="name">' + escapeHtml(username) + ':</span> ' + escapeHtml(message);
   chatContainer.appendChild(row);
-  while (chatContainer.children.length > MAX_MESSAGES) {
-    chatContainer.removeChild(chatContainer.firstElementChild);
-  }
+  while(chatContainer.children.length > MAX_MESSAGES){chatContainer.removeChild(chatContainer.firstElementChild);}
 }
 
-function connectWebSocket() {
+function connectWebSocket(){
   const ws = new WebSocket('ws://localhost:8080/');
-
-  ws.onopen = function() {
+  ws.onopen = function(){
     console.log('Connected to Streamer Bot WebSocket');
-    ws.send(JSON.stringify({
-      request: 'Subscribe',
-      events: { Twitch: ['ChatMessage'], Raw: ['*'] },
-      id: 'shark-chat'
-    }));
+    ws.send(JSON.stringify({request:'Subscribe',events:{Twitch:['ChatMessage']},id:'shark-chat'}));
   };
-
-  ws.onmessage = function(event) {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.event && data.event.type === 'ChatMessage') {
-        const msg = data.data;
-        addMessage(
-          msg.displayName || msg.username,
-          msg.message,
-          msg.isModerator || false,
-          msg.isVip || false
-        );
+  ws.onmessage = function(event){
+    try{
+      const parsed = JSON.parse(event.data);
+      console.log('WS:', JSON.stringify(parsed));
+      if(parsed.event && parsed.event.source === 'Twitch' && parsed.event.type === 'ChatMessage'){
+        const d = parsed.data;
+        const username = (d.user && (d.user.display_name || d.user.name)) || d.displayName || d.username || 'unknown';
+        const message = (d.message && d.message.message) || d.message || d.text || '';
+        const isMod = (d.user && d.user.role === 'Moderator') || d.isModerator || false;
+        const isVip = (d.user && d.user.isVip) || d.isVip || false;
+        addMessage(username, message, isMod, isVip);
       }
-    } catch(e) {
-      console.error(e);
-    }
+    }catch(e){console.error(e);}
   };
-
-  ws.onclose = function() {
-    console.log('Disconnected, reconnecting in 3s...');
-    setTimeout(connectWebSocket, 3000);
-  };
-
-  ws.onerror = function(err) {
-    console.error('WebSocket error:', err);
-    ws.close();
-  };
+  ws.onclose = function(){console.log('Disconnected, reconnecting...');setTimeout(connectWebSocket,3000);};
+  ws.onerror = function(){console.error('WebSocket error');ws.close();};
 }
 
 connectWebSocket();
 </script>
-
 </body>
 </html>
